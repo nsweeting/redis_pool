@@ -1,19 +1,23 @@
 # RedisPool
 
-**TODO: Add description**
+Redis connection pool using Poolboy and Exredis.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `redis_pool` to your list of dependencies in `mix.exs`:
+Add the following to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:redis_pool, "~> 0.1.0"}]
+  [{:redis_connection_pool, "~> 0.1.1"}]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/redis_pool](https://hexdocs.pm/redis_pool).
+## Usage
 
+```elixir
+alias RedisPool, as: Redis
+
+Redis.query(["SET", "key1", "value1"]) => {:ok, "OK"}
+Redis.query(["GET", "key1"]) => {:ok, "value1"}
+Redis.query(["GET", "key2"]) => {:undefined, nil}
+```
