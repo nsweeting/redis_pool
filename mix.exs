@@ -3,7 +3,7 @@ defmodule RedisPool.Mixfile do
 
   def project do
     [app: :redis_connection_pool,
-     version: "0.1.2",
+     version: "0.1.3",
      elixir: "~> 1.4-rc",
      description: description(),
      package: package(),
