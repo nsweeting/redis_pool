@@ -3,7 +3,7 @@ defmodule RedisPool.Config do
   Retrieves a key value from the configuration.
   """
   def get(name, default \\ nil) do
-    Application.get_env(:redis_pool, name, default)
+    Application.get_env(:redis_connection_pool, name, default)
   end
 
   @doc """
