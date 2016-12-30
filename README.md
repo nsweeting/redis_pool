@@ -8,7 +8,7 @@ Add the following to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:redis_connection_pool, "~> 0.1.1"}]
+  [{:redis_connection_pool, "~> 0.1.3"}]
 end
 ```
 

@@ -34,7 +34,7 @@ defmodule RedisPool.Mixfile do
       files: ["lib", "mix.exs", "README*"],
       maintainers: ["Nicholas Sweeting"],
       licenses: ["MIT"],
-      links: %{}
+      links:  %{"GitHub" => "https://github.com/nsweeting/redis_pool"}
     ]
   end
 
