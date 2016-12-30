@@ -18,16 +18,13 @@ defmodule RedisPool.Client do
   end
 
   @doc false
-  def query(args), do: command(args, :query)
+  def query(args) do
+    RedisPool.Worker.perform(%{command: :query, params: args})
+  end
 
   @doc false
-  def query_pipe(args), do: command(args, :query_pipe)
-
-  @doc false
-  defp command(args, type) do
-    :poolboy.transaction(Config.pool_name(), fn(worker) ->
-      GenServer.call(worker, %{command: type, params: args})
-    end, Config.timeout())
+  def query_pipe(args) do
+    RedisPool.Worker.perform(%{command: :query_pipe, params: args})
   end
 
   @doc false

@@ -1,5 +1,6 @@
 defmodule RedisPool.Worker do
   use GenServer
+  alias RedisPool.Config
 
   def start_link(_state) do
     GenServer.start_link(__MODULE__, %{conn: nil}, [])
@@ -7,6 +8,12 @@ defmodule RedisPool.Worker do
 
   def init(state) do
     {:ok, state}
+  end
+
+  def perform(job) do
+    :poolboy.transaction(Config.pool_name(), fn(worker) ->
+      GenServer.call(worker, job)
+    end, Config.timeout())
   end
 
   @doc false
