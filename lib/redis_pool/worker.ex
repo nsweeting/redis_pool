@@ -3,26 +3,22 @@ defmodule RedisPool.Worker do
   alias RedisPool.Config
 
   def start_link(_state) do
-    GenServer.start_link(__MODULE__, %{conn: nil}, [])
+    GenServer.start_link(__MODULE__, [], [])
   end
 
-  def init(state) do
+  def init(_) do
     {:ok, %{conn: RedisPool.Client.new}}
   end
 
-  def perform(job) do
+  def perform(call) do
     :poolboy.transaction(Config.pool_name(), fn(worker) ->
-      GenServer.call(worker, job)
+      GenServer.call(worker, call)
     end, Config.timeout())
   end
 
   @doc false
   def handle_call(%{command: command, params: params}, _from, %{conn: conn}) do
-    RedisPool.Client.ensure(conn) |> handle_command(command, params)
-  end
-
-  @doc false
-  defp handle_command(conn, command, params) do
+    conn = RedisPool.Client.ensure(conn)
     case command do
       :query ->
         {:reply, Exredis.query(conn, params), %{conn: conn}}
