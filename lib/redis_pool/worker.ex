@@ -7,18 +7,13 @@ defmodule RedisPool.Worker do
   end
 
   def init(state) do
-    {:ok, state}
+    {:ok, %{conn: RedisPool.Client.new}}
   end
 
   def perform(job) do
     :poolboy.transaction(Config.pool_name(), fn(worker) ->
       GenServer.call(worker, job)
     end, Config.timeout())
-  end
-
-  @doc false
-  def handle_call(%{command: command, params: params}, _from, %{conn: nil}) do
-    RedisPool.Client.new |> handle_command(command, params)
   end
 
   @doc false
