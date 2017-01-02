@@ -8,7 +8,7 @@ Add the following to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:redis_connection_pool, "~> 0.1.4"}]
+  [{:redis_connection_pool, "~> 0.1.5"}]
 end
 ```
 
@@ -31,6 +31,18 @@ config :redis_connection_pool, [
   port: 6379,
   password: "",
   db: 0,
+  reconnect: :no_reconnect,
+  pool_name: :"Redis.Pool",
+  pool_size: 10,
+  pool_max_overflow: 1
+]
+```
+
+Or use with the full_url option.
+
+```elixir
+config :redis_connection_pool, [
+  full_url: "redis://127.0.0.1:6379",
   reconnect: :no_reconnect,
   pool_name: :"Redis.Pool",
   pool_size: 10,
