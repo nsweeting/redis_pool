@@ -5,10 +5,7 @@ defmodule RedisPool.Client do
   @doc """
   Creates a new Redis client.
   """
-  def new do
-    {:ok, client} = build()
-    client
-  end
+  def new, do: build()
 
   @doc """
   Checks that a given client is alive, and if not, creates a new one.
@@ -28,12 +25,22 @@ defmodule RedisPool.Client do
   end
 
   @doc false
-  defp build do
+  defp build, do: build(Config.get(:full_url))
+
+  @doc false
+  defp build(nil) do
     host = Config.get(:host, "127.0.0.1")
     port = Config.get(:port, 6379)
     password = Config.get(:password, "")
     database = Config.get(:db, 0)
     reconnect = Config.get(:reconnect, :no_reconnect)
-    Exredis.start_link(host, port, database, password, reconnect)
+    {:ok, client} = Exredis.start_link(host, port, database, password, reconnect)
+    client
+  end
+
+  @doc false
+  defp build(full_url) when is_binary(full_url) do
+    reconnect = Config.get(:reconnect, :no_reconnect)
+    Exredis.start_using_connection_string(full_url, reconnect)
   end
 end
