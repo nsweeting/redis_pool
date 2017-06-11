@@ -47,8 +47,6 @@ defmodule RedisPool do
     args |> RedisPool.Client.query_pipe |> handle_result
   end
 
-  defp handle_result([_, result]) when is_binary(result), do: {:ok, result}
-  defp handle_result(:undefined), do: {:undefined, nil}
   defp handle_result(:error), do: {:error, nil}
   defp handle_result(result), do: {:ok, result}
 end
